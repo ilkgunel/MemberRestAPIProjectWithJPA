@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ilkaygunel.entities.Member;
+import com.ilkaygunel.facade.MemberFacade;
 import com.ilkaygunel.repository.MemberRepository;
 
 @Service
@@ -15,11 +16,15 @@ public class MemberGetService extends BaseService {
 	@Autowired
 	private MemberRepository memberRepository;
 
+	@Autowired
+	private MemberFacade memberFacade;
+
 	public List<Member> getAllMemberList() {
 		Logger LOGGER = loggingUtil.getLoggerForMemberGetting(this.getClass());
 		try {
 			LOGGER.log(Level.INFO, "getAllMemberList() method is running.");
-			return (List<Member>) memberRepository.findAll();
+			// return (List<Member>) memberRepository.findAll();
+			return memberFacade.findListByNamedQuery("Member.findAll");
 		} catch (Exception ex) {
 			LOGGER.log(Level.SEVERE, "An error occured while getting all members. Error is:" + ex.getMessage());
 		}
@@ -30,7 +35,8 @@ public class MemberGetService extends BaseService {
 		Logger LOGGER = loggingUtil.getLoggerForMemberGetting(this.getClass());
 		try {
 			LOGGER.log(Level.INFO, "getMemberViaId(...) method is running.");
-			return memberRepository.findOne(id);
+			// return memberRepository.findOne(id);
+			return memberFacade.find(id);
 		} catch (Exception ex) {
 			LOGGER.log(Level.SEVERE, "An error occured while getting member via id. Error is:" + ex.getMessage());
 		}
