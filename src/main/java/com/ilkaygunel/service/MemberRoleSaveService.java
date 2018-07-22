@@ -12,7 +12,9 @@ public class MemberRoleSaveService extends BaseService {
 
 	public MemberRoles getMemberRoleWithEmail(String email) {
 		Map<Object, Object> parameterMap = new HashMap();
-		parameterMap.put("email", "email");
-		return memberRoleFacade.findListByNamedQuery("MemberRoles.findByEmail", parameterMap).get(0);
+		parameterMap.put("email", email);
+		return memberRoleFacade.findListByNamedQuery("MemberRoles.findByEmail", parameterMap).size() > 0
+				? memberRoleFacade.findListByNamedQuery("MemberRoles.findByEmail", parameterMap).get(0)
+				: null;
 	}
 }

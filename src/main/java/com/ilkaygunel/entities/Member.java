@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,9 +25,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 		@NamedQuery(name = "Member.findPasswordOfMember", query = "select m.password from Member m where m.id =:id"),
 		@NamedQuery(name = "Member.findByActivationToken", query = "select m from Member m where m.activationToken =:activationToken"),
 		@NamedQuery(name = "Member.findByEmail", query = "select m from Member m where m.email =:email") })
+@Table(name = "MEMBER")
 public class Member {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
 	@Column(nullable = false)
 	private String firstName;
@@ -48,7 +51,7 @@ public class Member {
 	private LocalDateTime activationTokenExpDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "id")
+	// @JoinColumn(name = "id", insertable = false, updatable = false)
 	@PrimaryKeyJoinColumn(name = "id")
 	private MemberRoles roleOfMember;
 

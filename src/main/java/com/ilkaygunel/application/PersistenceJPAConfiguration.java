@@ -1,5 +1,6 @@
 package com.ilkaygunel.application;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +24,9 @@ public class PersistenceJPAConfiguration {
 
 	@Autowired
 	private Environment env;
+
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -43,8 +48,15 @@ public class PersistenceJPAConfiguration {
 
 	Properties additionalProperties() {
 		Properties properties = new Properties();
-		properties.setProperty("javax.persistence.schema-generation.database.action", "create");
+		properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
 		properties.setProperty("eclipselink.weaving", "false");
+		try {
+			properties.put("javax.persistence.sql-load-script-source",
+					resourceLoader.getResource("classpath:import.sql").getURL().toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return properties;
 	}
 
