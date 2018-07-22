@@ -28,7 +28,7 @@ public class MemberDeleteService extends BaseService {
 	public MemberOperationPojo deleteOneMember(long memberId, String roleOfMember) throws CustomException, Exception {
 		MemberOperationPojo memberOperationPojo = new MemberOperationPojo();
 		Member memberForDelete = memberUtil.checkMember(memberId, roleOfMember);
-		memberRepository.delete(memberId);
+		memberFacade.deleteByNativeQuery(memberId);
 		memberOperationPojo.setMember(memberForDelete);
 		memberOperationPojo
 				.setResult(resourceBundleMessageManager.getValueOfProperty(roleOfMember + "_memberDeletingSuccessfull",

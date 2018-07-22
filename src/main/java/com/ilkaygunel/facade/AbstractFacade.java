@@ -1,10 +1,12 @@
 package com.ilkaygunel.facade;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AbstractFacade<T> {
 
@@ -25,6 +27,23 @@ public abstract class AbstractFacade<T> {
 	public List<T> findListByNamedQuery(String namedQuery) throws Exception {
 		Query query = getEntityManager().createNamedQuery(namedQuery);
 		return query.getResultList();
+	}
+
+	@Transactional
+	public List<T> findListByNamedQuery(String namedQuery, Map<Object, Object> parameters) {
+		Query query = getEntityManager().createNamedQuery(namedQuery);
+		parameters.forEach((k, v) -> query.setParameter(k.toString(), v));
+		return query.getResultList();
+	}
+
+	@Transactional
+	public void create(T entity) {
+		getEntityManager().persist(entity);
+	}
+
+	@Transactional
+	public void update(T entity) {
+		getEntityManager().merge(entity);
 	}
 
 }

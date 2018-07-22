@@ -1,7 +1,9 @@
 package com.ilkaygunel.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,8 +18,8 @@ import com.ilkaygunel.entities.Member;
 import com.ilkaygunel.entities.MemberRoles;
 import com.ilkaygunel.exception.CustomException;
 import com.ilkaygunel.exception.ErrorCodes;
+import com.ilkaygunel.facade.MemberFacade;
 import com.ilkaygunel.pojo.MemberOperationPojo;
-import com.ilkaygunel.repository.MemberRepository;
 import com.ilkaygunel.service.MemberRoleSaveService;
 import com.ilkaygunel.wrapper.MemberIdWrapp;
 
@@ -25,7 +27,7 @@ import com.ilkaygunel.wrapper.MemberIdWrapp;
 public class MemberUtil {
 
 	@Autowired
-	private MemberRepository memberRepository;
+	private MemberFacade memberFacade;
 
 	@Autowired
 	private MemberRoleSaveService memberRoleSaveService;
@@ -41,11 +43,13 @@ public class MemberUtil {
 
 	public MemberOperationPojo checkEmailAddressAndLanguage(Member member, Logger LOGGER) {
 		MemberOperationPojo memberOperationPojo = new MemberOperationPojo();
+		Map<Object, Object> parameterMap = new HashMap<Object, Object>();
+		parameterMap.put("email", member.getEmail());
 		try {
 			if (ObjectUtils.isEmpty(member.getEmail())) {
 				throw new CustomException(ErrorCodes.ERROR_05.getErrorCode(),
 						resourceBundleMessageManager.getValueOfProperty(ErrorCodes.ERROR_05.getErrorCode(), "en"));
-			} else if (memberRepository.findByEmail(member.getEmail()) != null) {
+			} else if (memberFacade.findListByNamedQuery("Member.findByEmail", parameterMap).get(0) != null) {
 				throw new CustomException(ErrorCodes.ERROR_06.getErrorCode(),
 						resourceBundleMessageManager.getValueOfProperty(ErrorCodes.ERROR_06.getErrorCode(), "en") + " "
 								+ member.getEmail());
@@ -81,7 +85,7 @@ public class MemberUtil {
 	}
 
 	public Member checkMember(Long memberId, String roleForCheck) throws Exception {
-		Member member = memberRepository.findOne(memberId);
+		Member member = memberFacade.find(memberId);
 
 		if (member == null) {
 			if (ConstantFields.ROLE_USER.getConstantField().equals(roleForCheck)) {

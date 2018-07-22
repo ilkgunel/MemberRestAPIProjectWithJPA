@@ -59,8 +59,8 @@ public class MemberUpdateService extends BaseService {
 				memberOperationPojo.setResult(ex.getMessage());
 				LOGGER.log(Level.SEVERE,
 						resourceBundleMessageManager.getValueOfProperty(role + "_memberUpdatingFailed",
-								memberForUpdate.getMemberLanguageCode())
-								+ memberRepository.findOne(memberForUpdate.getId()) + ex.getMessage());
+								memberForUpdate.getMemberLanguageCode()) + memberFacade.find(memberForUpdate.getId())
+								+ ex.getMessage());
 			}
 
 		}
@@ -73,11 +73,11 @@ public class MemberUpdateService extends BaseService {
 				memberForUpdate.getMemberLanguageCode()));
 		LOGGER.log(Level.INFO, resourceBundleMessageManager.getValueOfProperty("memberInformationBeforeUpdate",
 				memberForUpdate.getMemberLanguageCode()));
-		memberForUpdate.setPassword(memberRepository.getPasswordOfMember(memberForUpdate.getId()));
-		memberRepository.save(memberForUpdate);
+		memberForUpdate.setPassword(memberFacade.find(memberForUpdate.getId()).getPassword());
+		memberFacade.update(memberForUpdate);
 		LOGGER.log(Level.INFO,
 				resourceBundleMessageManager.getValueOfProperty(roleForCheck + "_memberUpdatingSuccessful",
-						memberForUpdate.getMemberLanguageCode()) + memberRepository.findOne(memberForUpdate.getId()));
+						memberForUpdate.getMemberLanguageCode()) + memberFacade.find(memberForUpdate.getId()));
 
 	}
 }

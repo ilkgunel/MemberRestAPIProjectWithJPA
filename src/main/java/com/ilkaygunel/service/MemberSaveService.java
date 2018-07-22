@@ -71,7 +71,7 @@ public class MemberSaveService extends BaseService {
 		member.setEnabled(false);
 		addMemberRolesObject(role, member);
 		addActivationToken(member);
-		memberRepository.save(member);
+		memberFacade.create(member);
 		// mailUtil.sendActivationMail(member.getEmail(), member.getActivationToken());
 		memberOperationPojo.setResult(resourceBundleMessageManager.getValueOfProperty(role + "_memberAddingSuccessfull",
 				member.getMemberLanguageCode()));

@@ -8,10 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,7 +19,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @JsonInclude(Include.NON_NULL)
-@NamedQueries({ @NamedQuery(name = "Member.findAll", query = "select m from Member m") })
+@NamedQueries({ @NamedQuery(name = "Member.findAll", query = "select m from Member m"),
+		@NamedQuery(name = "Member.findByFirstName", query = "select m from Member m where m.firstName =:firstName"),
+		@NamedQuery(name = "Member.findPasswordOfMember", query = "select m.password from Member m where m.id =:id"),
+		@NamedQuery(name = "Member.findByActivationToken", query = "select m from Member m where m.activationToken =:activationToken"),
+		@NamedQuery(name = "Member.findByEmail", query = "select m from Member m where m.email =:email") })
 public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,7 +48,8 @@ public class Member {
 	private LocalDateTime activationTokenExpDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
+	// @JoinColumn(name = "id")
+	@PrimaryKeyJoinColumn(name = "id")
 	private MemberRoles roleOfMember;
 
 	@Override
