@@ -74,10 +74,17 @@ public class MemberUpdateService extends BaseService {
 		LOGGER.log(Level.INFO, resourceBundleMessageManager.getValueOfProperty("memberInformationBeforeUpdate",
 				memberForUpdate.getMemberLanguageCode()));
 		memberForUpdate.setPassword(memberFacade.find(memberForUpdate.getId()).getPassword());
-		memberFacade.update(memberForUpdate);
+		memberFacade.update(setUpdatableFields(memberForUpdate));
 		LOGGER.log(Level.INFO,
 				resourceBundleMessageManager.getValueOfProperty(roleForCheck + "_memberUpdatingSuccessful",
 						memberForUpdate.getMemberLanguageCode()) + memberFacade.find(memberForUpdate.getId()));
+	}
 
+	private Member setUpdatableFields(Member memberForUpdate) {
+		Member existingMembber = memberFacade.find(memberForUpdate.getId());
+		existingMembber.setFirstName(memberForUpdate.getFirstName());
+		existingMembber.setLastName(memberForUpdate.getLastName());
+		existingMembber.setMemberLanguageCode(memberForUpdate.getMemberLanguageCode());
+		return existingMembber;
 	}
 }
