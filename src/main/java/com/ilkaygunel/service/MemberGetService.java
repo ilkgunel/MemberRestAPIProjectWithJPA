@@ -37,13 +37,13 @@ public class MemberGetService extends BaseService {
 		return null;
 	}
 
-	public Member getMemberViaFirstName(String firstName) {
+	public List<Member> getMemberViaFirstName(String firstName) {
 		Logger LOGGER = loggingUtil.getLoggerForMemberGetting(this.getClass());
 		try {
 			LOGGER.log(Level.INFO, "getMemberViaFirstName(...) method is running.");
 			Map<Object, Object> parameterMap = new HashMap<>();
 			parameterMap.put("firstName", firstName);
-			return memberFacade.findListByNamedQuery("Member.findByFirstName", parameterMap).get(0);
+			return memberFacade.findListByNamedQuery("Member.findByFirstName", parameterMap);
 		} catch (Exception ex) {
 			LOGGER.log(Level.SEVERE,
 					"An error occured while getting member via first name. Error is:" + ex.getMessage());

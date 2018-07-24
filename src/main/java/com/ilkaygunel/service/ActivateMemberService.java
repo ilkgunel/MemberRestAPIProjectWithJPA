@@ -17,8 +17,8 @@ public class ActivateMemberService extends BaseService {
 		try {
 			Map<Object, Object> parameterMap = new HashMap();
 			parameterMap.put("activationToken", activationToken);
-			Member existingMember = memberFacade.findListByNamedQuery("Member.findByActivationToken", parameterMap)
-					.get(0);
+			Member existingMember = memberFacade.findOneRecordByNamedQuery("Member.findByActivationToken",
+					parameterMap);
 			if (existingMember == null) {
 				throw new CustomException(ErrorCodes.ERROR_08.getErrorCode(),
 						environment.getProperty(ErrorCodes.ERROR_08.getErrorCode()));

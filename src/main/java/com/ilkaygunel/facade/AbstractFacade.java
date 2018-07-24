@@ -37,6 +37,18 @@ public abstract class AbstractFacade<T> {
 	}
 
 	@Transactional
+	public T findOneRecordByNamedQuery(String namedQuery, Map<Object, Object> parameters) {
+		Query query = getEntityManager().createNamedQuery(namedQuery);
+		parameters.forEach((k, v) -> query.setParameter(k.toString(), v));
+		List<T> resultList = query.getResultList();
+		if (resultList.size() > 0) {
+			return resultList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@Transactional
 	public void create(T entity) {
 		getEntityManager().persist(entity);
 	}

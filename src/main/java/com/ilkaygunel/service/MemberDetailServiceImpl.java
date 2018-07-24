@@ -22,7 +22,7 @@ public class MemberDetailServiceImpl extends BaseService implements UserDetailsS
 	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
 		Map<Object, Object> parameterMap = new HashMap<Object, Object>();
 		parameterMap.put("email", emailAddress);
-		Member member = memberFacade.findListByNamedQuery("Member.findByEmail", parameterMap).get(0);
+		Member member = memberFacade.findOneRecordByNamedQuery("Member.findByEmail", parameterMap);
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(member.getRoleOfMember().getRole()));
 		return new User(member.getEmail(), member.getPassword(), member.isEnabled(), true, true, true,

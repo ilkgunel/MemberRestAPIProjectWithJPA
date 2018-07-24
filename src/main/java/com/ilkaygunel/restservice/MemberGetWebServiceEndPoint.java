@@ -29,7 +29,7 @@ public class MemberGetWebServiceEndPoint {
 	}
 
 	@RequestMapping(value = "/getMemberViaFirstName")
-	public Member getMemberViaFirstName(@RequestParam(value = "firstName", defaultValue = "") String memberName) {
+	public List<Member> getMemberViaFirstName(@RequestParam(value = "firstName", defaultValue = "") String memberName) {
 		return memberGetService.getMemberViaFirstName(memberName);
 	}
 }

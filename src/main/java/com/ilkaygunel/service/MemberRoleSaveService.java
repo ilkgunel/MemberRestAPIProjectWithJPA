@@ -11,10 +11,8 @@ import com.ilkaygunel.entities.MemberRoles;
 public class MemberRoleSaveService extends BaseService {
 
 	public MemberRoles getMemberRoleWithEmail(String email) {
-		Map<Object, Object> parameterMap = new HashMap();
+		Map<Object, Object> parameterMap = new HashMap<Object, Object>();
 		parameterMap.put("email", email);
-		return memberRoleFacade.findListByNamedQuery("MemberRoles.findByEmail", parameterMap).size() > 0
-				? memberRoleFacade.findListByNamedQuery("MemberRoles.findByEmail", parameterMap).get(0)
-				: null;
+		return memberRoleFacade.findOneRecordByNamedQuery("MemberRoles.findByEmail", parameterMap);
 	}
 }
