@@ -70,9 +70,10 @@ public class MemberUtil {
 
 	public MemberOperationPojo checkMemberExistenceOnMemberList(List<MemberIdWrapp> memberIdList, String roleForCheck) {
 		MemberOperationPojo memberOperationPojo = new MemberOperationPojo();
+		memberOperationPojo.setMemberList(new ArrayList<Member>());
 		try {
 			for (MemberIdWrapp memberIdWrapp : memberIdList) {
-				checkMember(memberIdWrapp.getId(), roleForCheck);
+				memberOperationPojo.getMemberList().add(checkMember(memberIdWrapp.getId(), roleForCheck));
 			}
 		} catch (CustomException customException) {
 			memberOperationPojo.setErrorCode(customException.getErrorCode());

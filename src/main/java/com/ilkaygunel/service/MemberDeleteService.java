@@ -25,14 +25,14 @@ public class MemberDeleteService extends BaseService {
 		return deleteBulkMember(memberIdList, ConstantFields.ROLE_ADMIN.getConstantField());
 	}
 
-	public MemberOperationPojo deleteOneMember(long memberId, String roleOfMember) throws CustomException, Exception {
+	private MemberOperationPojo deleteOneMember(Member member) throws CustomException, Exception {
 		MemberOperationPojo memberOperationPojo = new MemberOperationPojo();
-		Member memberForDelete = memberUtil.checkMember(memberId, roleOfMember);
-		memberFacade.deleteByNativeQuery(memberId);
-		memberOperationPojo.setMember(memberForDelete);
+		String memberRole = memberRoleFacade.find(member.getId()).getRole();
+		memberFacade.delete(member);
+		memberOperationPojo.setMember(member);
 		memberOperationPojo
-				.setResult(resourceBundleMessageManager.getValueOfProperty(roleOfMember + "_memberDeletingSuccessfull",
-						memberForDelete.getMemberLanguageCode()) + memberForDelete);
+				.setResult(resourceBundleMessageManager.getValueOfProperty(memberRole + "_memberDeletingSuccessfull",
+						member.getMemberLanguageCode()) + member);
 		return memberOperationPojo;
 	}
 
@@ -44,9 +44,8 @@ public class MemberDeleteService extends BaseService {
 		try {
 			if (ObjectUtils.isEmpty(deleteMemberOpertaionPojo.getErrorCode())) {
 				List<Member> deletedMemberList = new ArrayList<>();
-				for (MemberIdWrapp memberIdWrapp : memberIdList) {
-					MemberOperationPojo temporaryMemberOperationPojo = deleteOneMember(memberIdWrapp.getId(),
-							roleForCheck);
+				for (Member member : deleteMemberOpertaionPojo.getMemberList()) {
+					MemberOperationPojo temporaryMemberOperationPojo = deleteOneMember(member);
 					deletedMemberList.add(temporaryMemberOperationPojo.getMember());
 				}
 				memberOperationPojo.setResult(

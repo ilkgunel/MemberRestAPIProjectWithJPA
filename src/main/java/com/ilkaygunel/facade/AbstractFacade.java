@@ -56,4 +56,9 @@ public abstract class AbstractFacade<T> {
 		getEntityManager().merge(entity);
 	}
 
+	@Transactional
+	public void delete(T entity) {
+		getEntityManager().remove(entity);
+	}
+
 }

@@ -10,10 +10,8 @@ Links:
 		http://localhost:8080/MemberRestAPIProject/memberUpdateWebServiceEndpoint/updateUserMember
 		http://localhost:8080/MemberRestAPIProject/memberUpdateWebServiceEndpoint/updateAdminMember
 	For Deleting:
-		http://localhost:8080/MemberRestAPIProject/memberDeleteWebServiceEndPoint/deleteOneUserMember/2
-		http://localhost:8080/MemberRestAPIProject/memberDeleteWebServiceEndPoint/deleteOneAdminMember/5
-		http://localhost:8080/MemberRestAPIProject/memberDeleteWebServiceEndPoint/deleteBulkUSerMember
-		http://localhost:8080/MemberRestAPIProject/memberDeleteWebServiceEndPoint/deleteBulkAdminMember
+		http://localhost:8080/MemberRestAPIProject/memberDeleteWebServiceEndPoint/deleteUserMember
+		http://localhost:8080/MemberRestAPIProject/memberDeleteWebServiceEndPoint/deleteAdminMember
 		
 Sample JSON's:
 
