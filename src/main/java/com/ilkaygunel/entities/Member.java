@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "MEMBER_ID")
 	private long id;
 	@Column(nullable = false)
 	private String firstName;
@@ -50,9 +50,8 @@ public class Member {
 	@JsonIgnore
 	private LocalDateTime activationTokenExpDate;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "id", insertable = false, updatable = false)
-	@PrimaryKeyJoinColumn(name = "id")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "member")
+	@PrimaryKeyJoinColumn
 	private MemberRoles roleOfMember;
 
 	@Override
@@ -67,6 +66,9 @@ public class Member {
 
 	public void setId(Long id) {
 		this.id = id;
+		if (null != roleOfMember) {
+			roleOfMember.setId(id);
+		}
 	}
 
 	public String getFirstName() {

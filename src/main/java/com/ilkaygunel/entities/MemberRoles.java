@@ -2,13 +2,15 @@ package com.ilkaygunel.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @NamedQueries({
@@ -16,13 +18,15 @@ import javax.persistence.Table;
 @Table(name = "MEMBERROLES")
 public class MemberRoles {
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "MEMBERROLES_ID")
 	private long id;
 	private String email;
 	private String role;
 
-	@OneToOne(mappedBy = "roleOfMember")
+	@MapsId
+	@OneToOne // (mappedBy = "roleOfMember")
+	@JoinColumn(name = "MEMBERROLES_ID")
+	@JsonIgnore
 	private Member member;
 
 	public Long getId() {
@@ -47,5 +51,13 @@ public class MemberRoles {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
 	}
 }
