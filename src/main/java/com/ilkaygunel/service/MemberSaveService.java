@@ -63,7 +63,7 @@ public class MemberSaveService extends BaseService {
 		return memberOperationPojo;
 	}
 
-	public MemberOperationPojo addOneMember(Member member, String role, Logger LOGGER) throws MessagingException {
+	private void addOneMember(Member member, String role, Logger LOGGER) throws MessagingException {
 		MemberOperationPojo memberOperationPojo = new MemberOperationPojo();
 		LOGGER.log(Level.INFO, resourceBundleMessageManager.getValueOfProperty(role + "_memberAddingMethod",
 				member.getMemberLanguageCode()));
@@ -71,15 +71,13 @@ public class MemberSaveService extends BaseService {
 		member.setEnabled(false);
 		addMemberRolesObject(role, member);
 		addActivationToken(member);
-		member.getRoleOfMember().setMember(member);
 		memberFacade.create(member);
+		member.getRoleOfMember().setId(member.getId());
 		// mailUtil.sendActivationMail(member.getEmail(), member.getActivationToken());
 		memberOperationPojo.setResult(resourceBundleMessageManager.getValueOfProperty(role + "_memberAddingSuccessfull",
 				member.getMemberLanguageCode()));
 		LOGGER.log(Level.INFO, resourceBundleMessageManager.getValueOfProperty(role + "_memberAddingSuccessfull",
 				member.getMemberLanguageCode()) + member);
-
-		return memberOperationPojo;
 	}
 
 	private String getHashedPassword(String rawPassword) {
@@ -90,6 +88,7 @@ public class MemberSaveService extends BaseService {
 		MemberRoles rolesOfMember = new MemberRoles();
 		rolesOfMember.setRole(role);
 		rolesOfMember.setEmail(member.getEmail());
+		rolesOfMember.setMember(member);
 		member.setRoleOfMember(rolesOfMember);
 	}
 

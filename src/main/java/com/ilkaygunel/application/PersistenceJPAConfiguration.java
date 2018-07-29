@@ -46,7 +46,7 @@ public class PersistenceJPAConfiguration {
 		return transactionManager;
 	}
 
-	Properties additionalProperties() {
+	private Properties additionalProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
 		properties.setProperty("eclipselink.weaving", "false");
@@ -57,6 +57,8 @@ public class PersistenceJPAConfiguration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		properties.setProperty("eclipselink.logging.level.sql", "FINE");
+		properties.setProperty("eclipselink.logging.parameters", "true");
 		return properties;
 	}
 
